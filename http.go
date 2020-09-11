@@ -192,7 +192,7 @@ var bufferPool = sync.Pool{
 	New: func() interface{} { return new(bytes.Buffer) },
 }
 
-func (h *httpGetter) Get(ctx context.Context, in *pb.GetRequest, out *pb.GetResponse) error {
+func (h *httpGetter) Get(context context.Context, in *pb.GetRequest, out *pb.GetResponse) error {
 	u := fmt.Sprintf(
 		"%v%v/%v",
 		h.baseURL,
@@ -203,10 +203,9 @@ func (h *httpGetter) Get(ctx context.Context, in *pb.GetRequest, out *pb.GetResp
 	if err != nil {
 		return err
 	}
-	req = req.WithContext(ctx)
 	tr := http.DefaultTransport
 	if h.transport != nil {
-		tr = h.transport(ctx)
+		tr = h.transport(context)
 	}
 	res, err := tr.RoundTrip(req)
 	if err != nil {
